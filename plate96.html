@@ -5,14 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Platemap - 96 well</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
   <style>
-    #feedback {
-      font-size: 0.8em;
-      font-family: sans-serif;
-    }
-
     #selectable .ui-selecting {
       background: #FECA40;
       font-weight: bold;
@@ -53,19 +47,6 @@
       $("#selectable").selectable();
     })
 
-    $(function () {
-      // debug: print selected wells
-      $("#selectable").selectable({
-        stop: function () {
-          var result = $("#select-result").empty();
-          $(".ui-selected", this).each(function () {
-            var index = $("#selectable li").index(this);
-            result.append(getWellName(index) + " ");
-          });
-        }
-      });
-    });
-
     function getWellName(index, plate = 96) {
       // get a well name from index
       if (plate == 96) {
@@ -79,130 +60,172 @@
       col = String((index % ncols) + 1).padStart(2, "0")
       return row + col
     }
+
+    function setWellColour(id, colour) {
+      $("#" + id).css("background", colour)
+    }
+
+    function setWellAnnotation(id, value) {
+      $("#" + id).attr("annotation", value)
+    }
+
   </script>
 </head>
 
 <body>
-
   <a href="index.html">
     <h1>PlateMapper</h1>
   </a>
   <br>
+
+  <fieldset>
+    <label for="annotation">Label</label>
+    <input id="annotation" type="text" name="annotation">
+    <label for="colour">Colour</label>
+    <input id="colour" type="color" name="colour" value="#EEDA00">
+    <button id="btn-add">Add annotation</button>
+    <button id="btn-export">Export as csv</button>
+  </fieldset>
+  <br>
+
   <div>
     <ol id="selectable">
-      <li class="ui-state-default">A01</li>
-      <li class="ui-state-default">A02</li>
-      <li class="ui-state-default">A03</li>
-      <li class="ui-state-default">A04</li>
-      <li class="ui-state-default">A05</li>
-      <li class="ui-state-default">A06</li>
-      <li class="ui-state-default">A07</li>
-      <li class="ui-state-default">A08</li>
-      <li class="ui-state-default">A09</li>
-      <li class="ui-state-default">A10</li>
-      <li class="ui-state-default">A11</li>
-      <li class="ui-state-default">A12</li>
+      <li id="A01" class="ui-state-default" annotation="">A01</li>
+      <li id="A02" class="ui-state-default" annotation="">A02</li>
+      <li id="A03" class="ui-state-default" annotation="">A03</li>
+      <li id="A04" class="ui-state-default" annotation="">A04</li>
+      <li id="A05" class="ui-state-default" annotation="">A05</li>
+      <li id="A06" class="ui-state-default" annotation="">A06</li>
+      <li id="A07" class="ui-state-default" annotation="">A07</li>
+      <li id="A08" class="ui-state-default" annotation="">A08</li>
+      <li id="A09" class="ui-state-default" annotation="">A09</li>
+      <li id="A10" class="ui-state-default" annotation="">A10</li>
+      <li id="A11" class="ui-state-default" annotation="">A11</li>
+      <li id="A12" class="ui-state-default" annotation="">A12</li>
 
-      <li class="ui-state-default">B01</li>
-      <li class="ui-state-default">B02</li>
-      <li class="ui-state-default">B03</li>
-      <li class="ui-state-default">B04</li>
-      <li class="ui-state-default">B05</li>
-      <li class="ui-state-default">B06</li>
-      <li class="ui-state-default">B07</li>
-      <li class="ui-state-default">B08</li>
-      <li class="ui-state-default">B09</li>
-      <li class="ui-state-default">B10</li>
-      <li class="ui-state-default">B11</li>
-      <li class="ui-state-default">B12</li>
+      <li id="B01" class="ui-state-default" annotation="">B01</li>
+      <li id="B02" class="ui-state-default" annotation="">B02</li>
+      <li id="B03" class="ui-state-default" annotation="">B03</li>
+      <li id="B04" class="ui-state-default" annotation="">B04</li>
+      <li id="B05" class="ui-state-default" annotation="">B05</li>
+      <li id="B06" class="ui-state-default" annotation="">B06</li>
+      <li id="B07" class="ui-state-default" annotation="">B07</li>
+      <li id="B08" class="ui-state-default" annotation="">B08</li>
+      <li id="B09" class="ui-state-default" annotation="">B09</li>
+      <li id="B10" class="ui-state-default" annotation="">B10</li>
+      <li id="B11" class="ui-state-default" annotation="">B11</li>
+      <li id="B12" class="ui-state-default" annotation="">B12</li>
 
-      <li class="ui-state-default">C01</li>
-      <li class="ui-state-default">C02</li>
-      <li class="ui-state-default">C03</li>
-      <li class="ui-state-default">C04</li>
-      <li class="ui-state-default">C05</li>
-      <li class="ui-state-default">C06</li>
-      <li class="ui-state-default">C07</li>
-      <li class="ui-state-default">C08</li>
-      <li class="ui-state-default">C09</li>
-      <li class="ui-state-default">C10</li>
-      <li class="ui-state-default">C11</li>
-      <li class="ui-state-default">C12</li>
+      <li id="C01" class="ui-state-default" annotation="">C01</li>
+      <li id="C02" class="ui-state-default" annotation="">C02</li>
+      <li id="C03" class="ui-state-default" annotation="">C03</li>
+      <li id="C04" class="ui-state-default" annotation="">C04</li>
+      <li id="C05" class="ui-state-default" annotation="">C05</li>
+      <li id="C06" class="ui-state-default" annotation="">C06</li>
+      <li id="C07" class="ui-state-default" annotation="">C07</li>
+      <li id="C08" class="ui-state-default" annotation="">C08</li>
+      <li id="C09" class="ui-state-default" annotation="">C09</li>
+      <li id="C10" class="ui-state-default" annotation="">C10</li>
+      <li id="C11" class="ui-state-default" annotation="">C11</li>
+      <li id="C12" class="ui-state-default" annotation="">C12</li>
 
-      <li class="ui-state-default">D01</li>
-      <li class="ui-state-default">D02</li>
-      <li class="ui-state-default">D03</li>
-      <li class="ui-state-default">D04</li>
-      <li class="ui-state-default">D05</li>
-      <li class="ui-state-default">D06</li>
-      <li class="ui-state-default">D07</li>
-      <li class="ui-state-default">D08</li>
-      <li class="ui-state-default">D09</li>
-      <li class="ui-state-default">D10</li>
-      <li class="ui-state-default">D11</li>
-      <li class="ui-state-default">D12</li>
+      <li id="D01" class="ui-state-default" annotation="">D01</li>
+      <li id="D02" class="ui-state-default" annotation="">D02</li>
+      <li id="D03" class="ui-state-default" annotation="">D03</li>
+      <li id="D04" class="ui-state-default" annotation="">D04</li>
+      <li id="D05" class="ui-state-default" annotation="">D05</li>
+      <li id="D06" class="ui-state-default" annotation="">D06</li>
+      <li id="D07" class="ui-state-default" annotation="">D07</li>
+      <li id="D08" class="ui-state-default" annotation="">D08</li>
+      <li id="D09" class="ui-state-default" annotation="">D09</li>
+      <li id="D10" class="ui-state-default" annotation="">D10</li>
+      <li id="D11" class="ui-state-default" annotation="">D11</li>
+      <li id="D12" class="ui-state-default" annotation="">D12</li>
 
-      <li class="ui-state-default">E01</li>
-      <li class="ui-state-default">E02</li>
-      <li class="ui-state-default">E03</li>
-      <li class="ui-state-default">E04</li>
-      <li class="ui-state-default">E05</li>
-      <li class="ui-state-default">E06</li>
-      <li class="ui-state-default">E07</li>
-      <li class="ui-state-default">E08</li>
-      <li class="ui-state-default">E09</li>
-      <li class="ui-state-default">E10</li>
-      <li class="ui-state-default">E11</li>
-      <li class="ui-state-default">E12</li>
+      <li id="E01" class="ui-state-default" annotation="">E01</li>
+      <li id="E02" class="ui-state-default" annotation="">E02</li>
+      <li id="E03" class="ui-state-default" annotation="">E03</li>
+      <li id="E04" class="ui-state-default" annotation="">E04</li>
+      <li id="E05" class="ui-state-default" annotation="">E05</li>
+      <li id="E06" class="ui-state-default" annotation="">E06</li>
+      <li id="E07" class="ui-state-default" annotation="">E07</li>
+      <li id="E08" class="ui-state-default" annotation="">E08</li>
+      <li id="E09" class="ui-state-default" annotation="">E09</li>
+      <li id="E10" class="ui-state-default" annotation="">E10</li>
+      <li id="E11" class="ui-state-default" annotation="">E11</li>
+      <li id="E12" class="ui-state-default" annotation="">E12</li>
 
-      <li class="ui-state-default">F01</li>
-      <li class="ui-state-default">F02</li>
-      <li class="ui-state-default">F03</li>
-      <li class="ui-state-default">F04</li>
-      <li class="ui-state-default">F05</li>
-      <li class="ui-state-default">F06</li>
-      <li class="ui-state-default">F07</li>
-      <li class="ui-state-default">F08</li>
-      <li class="ui-state-default">F09</li>
-      <li class="ui-state-default">F10</li>
-      <li class="ui-state-default">F11</li>
-      <li class="ui-state-default">F12</li>
+      <li id="F01" class="ui-state-default" annotation="">F01</li>
+      <li id="F02" class="ui-state-default" annotation="">F02</li>
+      <li id="F03" class="ui-state-default" annotation="">F03</li>
+      <li id="F04" class="ui-state-default" annotation="">F04</li>
+      <li id="F05" class="ui-state-default" annotation="">F05</li>
+      <li id="F06" class="ui-state-default" annotation="">F06</li>
+      <li id="F07" class="ui-state-default" annotation="">F07</li>
+      <li id="F08" class="ui-state-default" annotation="">F08</li>
+      <li id="F09" class="ui-state-default" annotation="">F09</li>
+      <li id="F10" class="ui-state-default" annotation="">F10</li>
+      <li id="F11" class="ui-state-default" annotation="">F11</li>
+      <li id="F12" class="ui-state-default" annotation="">F12</li>
 
-      <li class="ui-state-default">G01</li>
-      <li class="ui-state-default">G02</li>
-      <li class="ui-state-default">G03</li>
-      <li class="ui-state-default">G04</li>
-      <li class="ui-state-default">G05</li>
-      <li class="ui-state-default">G06</li>
-      <li class="ui-state-default">G07</li>
-      <li class="ui-state-default">G08</li>
-      <li class="ui-state-default">G09</li>
-      <li class="ui-state-default">G10</li>
-      <li class="ui-state-default">G11</li>
-      <li class="ui-state-default">G12</li>
+      <li id="G01" class="ui-state-default" annotation="">G01</li>
+      <li id="G02" class="ui-state-default" annotation="">G02</li>
+      <li id="G03" class="ui-state-default" annotation="">G03</li>
+      <li id="G04" class="ui-state-default" annotation="">G04</li>
+      <li id="G05" class="ui-state-default" annotation="">G05</li>
+      <li id="G06" class="ui-state-default" annotation="">G06</li>
+      <li id="G07" class="ui-state-default" annotation="">G07</li>
+      <li id="G08" class="ui-state-default" annotation="">G08</li>
+      <li id="G09" class="ui-state-default" annotation="">G09</li>
+      <li id="G10" class="ui-state-default" annotation="">G10</li>
+      <li id="G11" class="ui-state-default" annotation="">G11</li>
+      <li id="G12" class="ui-state-default" annotation="">G12</li>
 
-      <li class="ui-state-default">H01</li>
-      <li class="ui-state-default">H02</li>
-      <li class="ui-state-default">H03</li>
-      <li class="ui-state-default">H04</li>
-      <li class="ui-state-default">H05</li>
-      <li class="ui-state-default">H06</li>
-      <li class="ui-state-default">H07</li>
-      <li class="ui-state-default">H08</li>
-      <li class="ui-state-default">H09</li>
-      <li class="ui-state-default">H10</li>
-      <li class="ui-state-default">H11</li>
-      <li class="ui-state-default">H12</li>
+      <li id="H01" class="ui-state-default" annotation="">H01</li>
+      <li id="H02" class="ui-state-default" annotation="">H02</li>
+      <li id="H03" class="ui-state-default" annotation="">H03</li>
+      <li id="H04" class="ui-state-default" annotation="">H04</li>
+      <li id="H05" class="ui-state-default" annotation="">H05</li>
+      <li id="H06" class="ui-state-default" annotation="">H06</li>
+      <li id="H07" class="ui-state-default" annotation="">H07</li>
+      <li id="H08" class="ui-state-default" annotation="">H08</li>
+      <li id="H09" class="ui-state-default" annotation="">H09</li>
+      <li id="H10" class="ui-state-default" annotation="">H10</li>
+      <li id="H11" class="ui-state-default" annotation="">H11</li>
+      <li id="H12" class="ui-state-default" annotation="">H12</li>
     </ol>
 
   </div>
-
-  <div>
-    <p id="feedback">
-      <span>Wells selected:</span> <span id="select-result"></span>
-    </p>
-  </div>
-
 </body>
+
+<script>
+
+  function saveAs(text, filename) {
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/plain;charset=urf-8,' + encodeURIComponent(text));
+    pom.setAttribute('download', filename);
+    pom.click();
+  }
+
+  $("#btn-add").click(function () {
+    var annotation = $("[name='annotation']").val()
+    var colour = $("[name='colour']").val()
+    $(".ui-selected").each(function () {
+      setWellColour(this.id, colour)
+      setWellAnnotation(this.id, annotation)
+    })
+  })
+
+  $("#btn-export").click(function () {
+    var csv = "well,annotation\n"
+    // loop though wells, get well-id and annotation
+    $("#selectable li").each(function () {
+      well = this.id
+      annotation = $(this).attr("annotation")
+      csv += `${well},${annotation}\n`
+    })
+    saveAs(csv, "platemap.csv")
+  })
+</script>
 
 </html>
