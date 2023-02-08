@@ -53,6 +53,10 @@
     function setWellAnnotation(id, value) {
       $("#" + id).attr("annotation", value)
     }
+
+    function setWellTitle(id, value) {
+      $("#" + id).attr("title", value)
+    }
   </script>
 </head>
 
@@ -503,6 +507,7 @@
     $(".ui-selected").each(function () {
       setWellColour(this.id, colour)
       setWellAnnotation(this.id, annotation)
+      setWellTitle(this.id, `${this.id}: ${annotation}`)
     })
   })
 
