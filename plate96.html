@@ -87,7 +87,10 @@
   <label for="colour">Colour</label>
   <input id="colour" type="color" name="colour" value="#EEDA00">
   <button id="btn-add">Add annotation</button>
+  <br>
+  <br>
   <button id="btn-export">Export as csv</button>
+  <input id="chk-excl-empty" type="checkbox">Exclude empty wells</input>
   <br>
   <br>
 
@@ -213,11 +216,13 @@
   })
 
   $("#btn-export").click(function () {
+    let excl_empty = $("#chk-excl-empty").prop("checked")
     var csv = "well,annotation\n"
     // loop though wells, get well-id and annotation
     $("#selectable li").each(function () {
       well = this.id
       annotation = $(this).attr("annotation")
+      if (excl_empty && annotation == "") {return true}
       csv += `${well},${annotation}\n`
     })
     saveAs(csv, "platemap.csv")
