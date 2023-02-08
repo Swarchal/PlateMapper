@@ -46,20 +46,6 @@
       $("#selectable").selectable();
     })
 
-    function getWellName(index, plate = 96) {
-      // get a well name from index
-      if (plate == 96) {
-        ncols = 12
-      } else if (plate == 384) {
-        ncols = 24
-      } else {
-        throw "invalid plate"
-      }
-      row = String.fromCharCode(Math.floor(index / ncols) + 65)
-      col = String((index % ncols) + 1).padStart(2, "0")
-      return row + col
-    }
-
     function setWellColour(id, colour) {
       $("#" + id).css("background", colour)
     }
@@ -75,16 +61,26 @@
   <a href="index.html">
     <h1>PlateMapper</h1>
   </a>
+
+  <h3>Instructions</h3>
+  <ol>
+    <li>Drag or click to select wells to label. Hold Ctrl to select additional wells.</li>
+    <li>Assign selected wells a label and colour, click "Add annotation"</li>
+    <li>Export annotations as a csv</li>
+  </ol>
   <br>
-  <fieldset>
-    <label for="annotation">Label</label>
-    <input id="annotation" type="text" name="annotation">
-    <label for="colour">Colour</label>
-    <input id="colour" type="color" name="colour" value="#EEDA00">
-    <button id="btn-add">Add annotation</button>
-    <button id="btn-export">Export as csv</button>
-  </fieldset>
+  <hr>
   <br>
+
+  <label for="annotation">Label</label>
+  <input id="annotation" type="text" name="annotation">
+  <label for="colour">Colour</label>
+  <input id="colour" type="color" name="colour" value="#EEDA00">
+  <button id="btn-add">Add annotation</button>
+  <button id="btn-export">Export as csv</button>
+  <br>
+  <br>
+
   <div>
     <ol id="selectable">
       <li id="A01" class="ui-state-default" annotation="">A01</li>
@@ -496,7 +492,7 @@
 
   function saveAs(text, filename) {
     var pom = document.createElement('a');
-    pom.setAttribute('href', 'data:text/plain;charset=urf-8,' + encodeURIComponent(text));
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
     pom.setAttribute('download', filename);
     pom.click();
   }
