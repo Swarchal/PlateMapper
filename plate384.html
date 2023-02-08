@@ -41,6 +41,7 @@
   </style>
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <script src="functions.js"></script>
   <script>
     $(function () {
       $("#selectable").selectable();
@@ -48,6 +49,7 @@
 
     function setWellColour(id, colour) {
       $("#" + id).css("background", colour)
+      $("#" + id).css("color", decideTextColour(colour))
     }
 
     function setWellAnnotation(id, value) {
@@ -493,14 +495,6 @@
 </body>
 
 <script>
-
-  function saveAs(text, filename) {
-    var pom = document.createElement('a');
-    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-    pom.setAttribute('download', filename);
-    pom.click();
-  }
-
   $("#btn-add").click(function () {
     var annotation = $("[name='annotation']").val()
     var colour = $("[name='colour']").val()
