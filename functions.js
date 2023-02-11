@@ -15,3 +15,26 @@ function saveAs(text, filename) {
   pom.click();
 }
 
+function deselectWells() {
+  $.each($(".ui-selected"), function() {
+    $(this).removeClass("ui-selected")
+  })
+}
+
+
+$(function() {
+  $("#selectable").selectable();
+})
+
+function setWellColour(id, colour) {
+  $("#" + id).css("background", colour)
+  $("#" + id).css("color", decideTextColour(colour))
+}
+
+function setWellAnnotation(id, value) {
+  $("#" + id).attr("annotation", value)
+}
+
+function setWellTitle(id, value) {
+  $("#" + id).attr("title", value)
+}
