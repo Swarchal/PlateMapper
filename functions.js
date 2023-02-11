@@ -38,3 +38,29 @@ function setWellAnnotation(id, value) {
 function setWellTitle(id, value) {
   $("#" + id).attr("title", value)
 }
+
+function addAnnotations() {
+  var annotation = $("[name='annotation']").val()
+  var colour = $("[name='colour']").val()
+  $(".ui-selected").each(function() {
+    setWellColour(this.id, colour)
+    setWellAnnotation(this.id, annotation)
+    setWellTitle(this.id, `${this.id}: ${annotation}`)
+  })
+  deselectWells()
+}
+
+function exportAnnotations() {
+  let excl_empty = $("#chk-excl-empty").prop("checked")
+  var csv = "well,annotation\n"
+  // loop though wells, get well-id and annotation
+  $("#selectable li").each(function() {
+    well = this.id
+    annotation = $(this).attr("annotation")
+    if (excl_empty && annotation == "") {
+      return true
+    }
+    csv += `${well},${annotation}\n`
+  })
+  saveAs(csv, "platemap.csv")
+}
