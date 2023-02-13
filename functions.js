@@ -72,16 +72,22 @@ function getUniqueAnnotations() {
   // unique colour + annotation
   var annotations = new Set()
   $("#selectable li").each(function() {
-    var colour = $(this).attr("style")
-    var annotation = $(this).attr("annotation")
-    annotations.add([colour, annotation])
+    colour = $(this).attr("style")
+    annotation = $(this).attr("annotation")
+    if (annotation == "") { return true }
+    annotations.add(`<li><span style="${colour}">${annotation}</span></li>`)
   })
   return Array.from(annotations)
 }
 
 function buildLegendHtml(annotations) {
   // create HTML for legend from an array of [[colour, annotation-name]]
-  return "<ul><li>test</li><li>foo</li></ul>"
+  var list = `<ul>`
+  for (i = 0; i < annotations.length; i++) {
+    list += annotations[i]
+  }
+  list += "</ul>"
+  return list
 }
 
 

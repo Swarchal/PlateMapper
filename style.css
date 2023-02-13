@@ -29,11 +29,10 @@ a:hover {
   color: #999999;
 }
 
-.box {
+#plate {
   float: left;
-  height: 20px;
-  width: 20px;
-  margin-bottom: 15px;
-  border: 1px solid black;
-  clear: both;
+}
+
+#legend {
+  float: right;
 }
