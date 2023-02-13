@@ -48,6 +48,7 @@ function addAnnotations() {
     setWellTitle(this.id, `${this.id}: ${annotation}`)
   })
   deselectWells()
+  drawLegend()
 }
 
 function exportAnnotations() {
@@ -56,11 +57,37 @@ function exportAnnotations() {
   // loop though wells, get well-id and annotation
   $("#selectable li").each(function() {
     well = this.id
-    annotation = $(this).attr("annotation")
+    var annotation = $(this).attr("annotation")
     if (excl_empty && annotation == "") {
       return true
     }
     csv += `${well},${annotation}\n`
   })
   saveAs(csv, "platemap.csv")
+}
+
+
+function getUniqueAnnotations() {
+  // scan through selectable elements and return an array of
+  // unique colour + annotation
+  var annotations = new Set()
+  $("#selectable li").each(function() {
+    var colour = $(this).attr("style")
+    var annotation = $(this).attr("annotation")
+    annotations.add([colour, annotation])
+  })
+  return Array.from(annotations)
+}
+
+function buildLegendHtml(annotations) {
+  // create HTML for legend from an array of [[colour, annotation-name]]
+  return "<ul><li>test</li><li>foo</li></ul>"
+}
+
+
+function drawLegend() {
+  var annotations = getUniqueAnnotations()
+  var legendHtml = buildLegendHtml(annotations)
+  $("#legend").html(legendHtml)
+
 }
