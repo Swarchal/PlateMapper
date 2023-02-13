@@ -2,7 +2,7 @@ html, body, tr, td, hr {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #ffffff;
   color: #000000;
-  max-width: 800px;
+  max-width: 1000px;
   margin: auto;
   padding-left: 10px;
   padding-right: 10px;
@@ -35,4 +35,12 @@ a:hover {
 
 #legend {
   float: right;
+}
+
+#legendItem {
+  padding: 5px;
+}
+
+li {
+  margin: 5px;
 }
