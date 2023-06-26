@@ -8,12 +8,14 @@ function decideTextColour(bgColor, lightColor = "#FFFFFF", darkColor = "#000000"
     darkColor : lightColor;
 }
 
+
 function saveAs(text, filename) {
   var pom = document.createElement('a');
   pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
   pom.setAttribute('download', filename);
   pom.click();
 }
+
 
 function deselectWells() {
   $.each($(".ui-selected"), function() {
@@ -26,18 +28,22 @@ $(function() {
   $("#selectable").selectable();
 })
 
+
 function setWellColour(id, colour) {
   $("#" + id).css("background", colour)
   $("#" + id).css("color", decideTextColour(colour))
 }
 
+
 function setWellAnnotation(id, value) {
   $("#" + id).attr("annotation", value)
 }
 
+
 function setWellTitle(id, value) {
   $("#" + id).attr("title", value)
 }
+
 
 function addAnnotations() {
   var annotation = $("[name='annotation']").val()
@@ -51,17 +57,35 @@ function addAnnotations() {
   drawLegend()
 }
 
+
+function rgbStringToHex(rgb) {
+  var a = rgb.split("(")[1].split(")")[0]
+  a = a.split(",")
+  var b = a.map(function(x) {
+    x = parseInt(x).toString(16)
+    return (x.length == 1) ? "0" + x : x
+  })
+  return "#" + b.join("")
+}
+
+
 function exportAnnotations() {
   let excl_empty = $("#chk-excl-empty").prop("checked")
-  var csv = "well,annotation\n"
+  var csv = "well,annotation,colour\n"
   // loop though wells, get well-id and annotation
   $("#selectable li").each(function() {
     well = this.id
     var annotation = $(this).attr("annotation")
+    var rgbString = $(this).prop("style")["background-color"]
+    if (rgbString.length > 0) {
+      var colourHex = rgbStringToHex(rgbString)
+    } else {
+      var colourHex = ""
+    }
     if (excl_empty && annotation == "") {
       return true
     }
-    csv += `${well},${annotation}\n`
+    csv += `${well},${annotation},${colourHex}\n`
   })
   saveAs(csv, "platemap.csv")
 }
@@ -80,6 +104,7 @@ function getUniqueAnnotations() {
   return Array.from(annotations)
 }
 
+
 function buildLegendHtml(annotations) {
   // create HTML for legend from an array of [[colour, annotation-name]]
   var list = `<ul>`
@@ -95,5 +120,4 @@ function drawLegend() {
   var annotations = getUniqueAnnotations()
   var legendHtml = buildLegendHtml(annotations)
   $("#legend").html(legendHtml)
-
 }
