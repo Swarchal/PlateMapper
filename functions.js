@@ -57,8 +57,21 @@ function addAnnotations() {
   drawLegend()
 }
 
+function addAnnotationsFromArray(annotations) {
+  // given an array of annotations, parsed from a file
+  // add these annotations to the on-screen wells
+  for (const annotation of annotations) {
+    setWellColour(annotation.id, annotation.colour)
+    setWellAnnotation(annotation.id, annotation.annotation)
+    setWellTitle(annotation.id, `${annotation.id}: ${annotation.annotation}`)
+  }
+  drawLegend()
+}
+
 
 function rgbStringToHex(rgb) {
+  // convert style RGB string to colour hex code
+  // e.g "rgb(255, 255, 255)" -> "#FFFFFF"
   var a = rgb.split("(")[1].split(")")[0]
   a = a.split(",")
   var b = a.map(function(x) {
@@ -89,6 +102,50 @@ function exportAnnotations() {
   })
   saveAs(csv, "platemap.csv")
 }
+
+
+const importAnnotations = async (event) => {
+  // read in plate annotation from previously exported file
+  // TODO: parse file to annotations
+  // TODO: apply annotations to on-screen elements
+  const file = event.target.files[0]
+  const fileContents = await readUploadedFileAsText(file)
+  let annotations = parseCSV(fileContents)
+  addAnnotationsFromArray(annotations)
+}
+
+
+const readUploadedFileAsText = (inputFile) => {
+  // I hate javascript so so much
+  const temporaryFileReader = new FileReader();
+  return new Promise((resolve, reject) => {
+    temporaryFileReader.onerror = () => {
+      temporaryFileReader.abort()
+      reject(new DOMException("Problem parsing input file."))
+    };
+    temporaryFileReader.onload = () => {
+      resolve(temporaryFileReader.result);
+    }
+    temporaryFileReader.readAsText(inputFile)
+  });
+};
+
+
+function parseCSV(csvText) {
+  // parse csv text into an array of objects {id, annotation, colour}
+  var annotations = []
+  var well, annotation, colour
+  const lines = csvText.split("\n")
+  for (var i = 1; i < lines.length; i++) {
+    if (lines[i] != "") {
+      [well, annotation, colour] = lines[i].split(",")
+      annotations.push({ id: well, annotation: annotation, colour: colour })
+    }
+  }
+  console.log(annotations)
+  return annotations
+}
+
 
 
 function getUniqueAnnotations() {
