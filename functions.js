@@ -106,8 +106,6 @@ function exportAnnotations() {
 
 const importAnnotations = async (event) => {
   // read in plate annotation from previously exported file
-  // TODO: parse file to annotations
-  // TODO: apply annotations to on-screen elements
   const file = event.target.files[0]
   const fileContents = await readUploadedFileAsText(file)
   let annotations = parseCSV(fileContents)
