@@ -57,6 +57,21 @@ function addAnnotations() {
   drawLegend()
 }
 
+
+// clear annotations of selected wells
+function clearAnnotations() {
+  $(".ui-selected").each(function() {
+    setWellColour(this.id, "")
+    // specifically set well text colour to black
+    $("#" + this.id).css("color", "#000000")
+    setWellAnnotation(this.id, "")
+    setWellTitle(this.id, "")
+  })
+  deselectWells()
+  drawLegend()
+}
+
+
 function addAnnotationsFromArray(annotations) {
   // given an array of annotations, parsed from a file
   // add these annotations to the on-screen wells
