@@ -1,51 +1,209 @@
-html, body, tr, td, hr {
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #ffffff;
-  color: #000000;
-  max-width: 1000px;
-  margin: auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  background-color: #f0f2f5;
+  color: #1a1a2e;
+  margin: 0;
+  padding: 0;
 }
 
-article {
-  max-width: 800px;
-  margin: auto;
+body {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 28px;
 }
 
-a:link {
-  color: #000000;
+h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.5px;
 }
 
-a:visited {
-  color: #555555;
+h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin: 20px 0 6px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-a:active {
-  color: #000000;
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.15s ease;
 }
 
 a:hover {
-  color: #999999;
+  opacity: 0.7;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 16px 0;
+}
+
+ol {
+  padding-left: 20px;
+  line-height: 1.8;
+  color: #4a5568;
+  font-size: 0.9rem;
+}
+
+/* Buttons */
+button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  background-color: #3b82f6;
+  color: #ffffff;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+  white-space: nowrap;
+}
+
+button:hover:not(:disabled) {
+  background-color: #2563eb;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
+}
+
+button:active:not(:disabled) {
+  background-color: #1d4ed8;
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+button:disabled {
+  background-color: #e2e8f0;
+  color: #a0aec0;
+  cursor: not-allowed;
+}
+
+#btn-clear {
+  background-color: #ef4444;
+}
+
+#btn-clear:hover:not(:disabled) {
+  background-color: #dc2626;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+}
+
+#btn-export {
+  background-color: #10b981;
+}
+
+#btn-export:hover:not(:disabled) {
+  background-color: #059669;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+}
+
+/* Form controls */
+label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+input[type="text"] {
+  padding: 7px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  background: #ffffff;
+  color: #1a1a2e;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+input[type="color"] {
+  padding: 2px 3px;
+  width: 44px;
+  height: 34px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #ffffff;
+  vertical-align: middle;
+}
+
+input[type="file"] {
+  font-size: 0.875rem;
+  color: #4a5568;
+}
+
+input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  accent-color: #3b82f6;
+  vertical-align: middle;
+}
+
+/* Controls layout */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+/* Plate + Legend layout */
+#plate-layout {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  margin-top: 20px;
+  flex-wrap: wrap;
 }
 
 #plate {
-  float: left;
+  flex: 0 0 auto;
 }
 
 #legend {
-  float: right;
+  flex: 0 0 auto;
+  min-width: 140px;
 }
 
-#legendItem {
-  padding: 5px;
+#legend ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-li {
-  margin: 5px;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: -moz-none;
-  -o-user-select: none;
+#legend li {
+  margin: 5px 0;
+  user-select: none;
+}
+
+#legend li span {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Well list items */
+#selectable li {
   user-select: none;
 }

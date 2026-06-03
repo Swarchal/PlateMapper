@@ -26,13 +26,13 @@
       list-style-type: none;
       margin: 0;
       padding: 0;
-      width: 480px;
+      display: grid;
+      grid-template-columns: repeat(12, 30px);
+      gap: 6px;
     }
 
     #selectable li {
-      margin: 3px;
-      padding: 1px;
-      float: left;
+      padding: 0;
       border-radius: 50%;
       width: 30px;
       height: 30px;
@@ -59,27 +59,30 @@
     <li>Assign selected wells a label and colour, click "Add annotation"</li>
     <li>Export annotations as a csv</li>
   </ol>
-  <br>
   <hr>
-  <br>
 
-  <label for="annotation">Label</label>
-  <input id="annotation" type="text" name="annotation">
-  <label for="colour">Colour</label>
-  <input id="colour" type="color" name="colour" value="#EEDA00">
-  <button id="btn-add">Add annotation</button>
-  <button id="btn-clear">Clear selected</button>
-  <br>
-  <br>
-  <label for="btn-import">Import platemap from csv </label>
-  <input type="file" id="btn-import" accept=".csv" onchange="importAnnotations(event)" />
-  <br>
-  <br>
-  <button id="btn-export">Export as csv</button>
-  <input id="chk-excl-empty" type="checkbox">Exclude empty wells</input>
-  <br>
-  <br>
+  <div class="controls">
+    <label for="annotation">Label</label>
+    <input id="annotation" type="text" name="annotation">
+    <label for="colour">Colour</label>
+    <input id="colour" type="color" name="colour" value="#EEDA00">
+    <button id="btn-add">Add annotation</button>
+    <button id="btn-clear">Clear selected</button>
+  </div>
 
+  <div class="controls">
+    <label for="btn-import">Import from csv</label>
+    <input type="file" id="btn-import" accept=".csv" onchange="importAnnotations(event)" />
+  </div>
+
+  <div class="controls">
+    <button id="btn-export">Export as csv</button>
+    <label style="font-weight:400;">
+      <input id="chk-excl-empty" type="checkbox"> Exclude empty wells
+    </label>
+  </div>
+
+  <div id="plate-layout">
   <div id="plate">
     <ol id="selectable">
       <li id="A01" class="ui-state-default" annotation="">A01</li>
@@ -190,6 +193,7 @@
   </div>
 
   <div id="legend">
+  </div>
   </div>
 
   <script>

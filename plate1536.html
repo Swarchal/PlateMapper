@@ -26,20 +26,21 @@
             list-style-type: none;
             margin: 0;
             padding: 0;
-            width: 1010px;
+            display: grid;
+            grid-template-columns: repeat(48, 18px);
+            gap: 3px;
         }
 
         #selectable li {
-            margin: 2px;
-            padding: 1px;
-            float: left;
-            width: 15px;
-            height: 15px;
-            line-height: 15px;
-            font-size: 0.6em;
+            padding: 0;
+            width: 18px;
+            height: 18px;
+            line-height: 18px;
+            font-size: 7px;
             font-family: monospace;
             text-align: center;
             background: #DADADA;
+            overflow: hidden;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -59,23 +60,25 @@
         <li>Assign selected wells a label and colour, click "Add annotation"</li>
         <li>Export annotations as a csv</li>
     </ol>
-    <br>
     <hr>
-    <br>
 
-    <label for="annotation">Label</label>
-    <input id="annotation" type="text" name="annotation">
-    <label for="colour">Colour</label>
-    <input id="colour" type="color" name="colour" value="#EEDA00">
-    <button id="btn-add">Add annotation</button>
-    <button id="btn-clear">Clear selected</button>
-    <br>
-    <br>
-    <button id="btn-export">Export as csv</button>
-    <input id="chk-excl-empty" type="checkbox">Exclude empty wells</input>
-    <br>
-    <br>
+    <div class="controls">
+      <label for="annotation">Label</label>
+      <input id="annotation" type="text" name="annotation">
+      <label for="colour">Colour</label>
+      <input id="colour" type="color" name="colour" value="#EEDA00">
+      <button id="btn-add">Add annotation</button>
+      <button id="btn-clear">Clear selected</button>
+    </div>
 
+    <div class="controls">
+      <button id="btn-export">Export as csv</button>
+      <label style="font-weight:400;">
+        <input id="chk-excl-empty" type="checkbox"> Exclude empty wells
+      </label>
+    </div>
+
+    <div id="plate-layout">
     <div id="plate">
         <ol id="selectable">
             <li id="A01" class="ui-state-default" annotation="">A01</li>
@@ -1658,6 +1661,7 @@
 
 
     <div id="legend">
+    </div>
     </div>
 
 </body>
