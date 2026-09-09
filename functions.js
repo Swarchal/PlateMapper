@@ -26,7 +26,64 @@ function deselectWells() {
 
 $(function() {
   $("#selectable").selectable();
+  $("[name='annotation']").on("input", updateDefaultColour)
+  updateDefaultColour()
 })
+
+
+// distinguishable colours cycled through as new annotations are added, so
+// that a plate doesn't end up entirely the default yellow
+const COLOUR_PALETTE = [
+  "#EEDA00", "#4E79A7", "#E15759", "#59A14F", "#B07AA1",
+  "#F28E2B", "#76B7B2", "#EDC948", "#FF9DA7", "#9C755F"
+]
+
+
+function getUsedColours() {
+  // hex colours currently assigned to annotated wells
+  var colours = new Set()
+  $("#selectable li").each(function() {
+    var rgbString = $(this).prop("style")["background-color"]
+    if ($(this).attr("annotation") != "" && rgbString != "") {
+      colours.add(rgbStringToHex(rgbString).toUpperCase())
+    }
+  })
+  return colours
+}
+
+
+function getAnnotationColour(annotation) {
+  // hex colour already used for an annotation, or "" if it's a new annotation
+  var colour = ""
+  $("#selectable li").each(function() {
+    var rgbString = $(this).prop("style")["background-color"]
+    if ($(this).attr("annotation") == annotation && rgbString != "") {
+      colour = rgbStringToHex(rgbString).toUpperCase()
+      return false
+    }
+  })
+  return colour
+}
+
+
+function nextDefaultColour() {
+  // first palette colour not already in use, falling back to cycling through
+  // the palette once every colour has been used
+  var used = getUsedColours()
+  for (const colour of COLOUR_PALETTE) {
+    if (!used.has(colour)) { return colour }
+  }
+  return COLOUR_PALETTE[used.size % COLOUR_PALETTE.length]
+}
+
+
+function updateDefaultColour() {
+  // keep re-used labels on their existing colour, and move new labels onto
+  // an unused colour so the user doesn't have to pick one manually
+  var annotation = $("[name='annotation']").val()
+  var existing = (annotation == "") ? "" : getAnnotationColour(annotation)
+  $("[name='colour']").val(existing == "" ? nextDefaultColour() : existing)
+}
 
 
 function setWellColour(id, colour) {
@@ -55,6 +112,7 @@ function addAnnotations() {
   })
   deselectWells()
   drawLegend()
+  updateDefaultColour()
 }
 
 
@@ -81,6 +139,7 @@ function addAnnotationsFromArray(annotations) {
     setWellTitle(annotation.id, `${annotation.id}: ${annotation.annotation}`)
   }
   drawLegend()
+  updateDefaultColour()
 }
 
 
@@ -148,6 +207,9 @@ function parseCSV(csvText) {
   // parse csv text into an array of objects {id, annotation, colour}
   var annotations = []
   var well, annotation, colour
+  if (!csvText || csvText.trim() === "") {
+    return []
+  }
   const lines = csvText.split("\n")
   for (var i = 1; i < lines.length; i++) {
     if (lines[i] != "") {
@@ -155,7 +217,6 @@ function parseCSV(csvText) {
       annotations.push({ id: well, annotation: annotation, colour: colour })
     }
   }
-  console.log(annotations)
   return annotations
 }
 
