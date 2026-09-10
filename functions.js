@@ -66,14 +66,42 @@ function getAnnotationColour(annotation) {
 }
 
 
+function hslToHex(h, s, l) {
+  // h in degrees, s and l as percentages
+  s /= 100
+  l /= 100
+  var a = s * Math.min(l, 1 - l)
+  var component = function(n) {
+    var k = (n + h / 30) % 12
+    var value = l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1))
+    return Math.round(255 * value).toString(16).padStart(2, "0")
+  }
+  return ("#" + component(0) + component(8) + component(4)).toUpperCase()
+}
+
+
+function generatedColour(i) {
+  // colours beyond the fixed palette, spread around the colour wheel by the
+  // golden angle so consecutive annotations stay distinguishable
+  var hue = (30 + i * 137.508) % 360
+  var saturation = 55 + (i % 3) * 15
+  var lightness = 50 + (i % 4) * 8
+  return hslToHex(hue, saturation, lightness)
+}
+
+
 function nextDefaultColour() {
-  // first palette colour not already in use, falling back to cycling through
-  // the palette once every colour has been used
+  // first palette colour not already in use, then generated colours once the
+  // whole palette has been used
   var used = getUsedColours()
   for (const colour of COLOUR_PALETTE) {
     if (!used.has(colour)) { return colour }
   }
-  return COLOUR_PALETTE[used.size % COLOUR_PALETTE.length]
+  for (var i = 0; i < 1000; i++) {
+    var colour = generatedColour(i)
+    if (!used.has(colour)) { return colour }
+  }
+  return COLOUR_PALETTE[0]
 }
 
 
@@ -223,24 +251,31 @@ function parseCSV(csvText) {
 
 
 function getUniqueAnnotations() {
-  // scan through selectable elements and return an array of
-  // unique colour + annotation
-  var annotations = new Set()
+  // scan through selectable elements and return an array of unique
+  // {annotation, style} sorted alphabetically, so the legend order doesn't
+  // depend on where on the plate an annotation happens to be used
+  var annotations = new Map()
   $("#selectable li").each(function() {
-    colour = $(this).attr("style")
-    annotation = $(this).attr("annotation")
-    if (annotation == "") { return true }
-    annotations.add(`<li><span style="${colour}">${annotation}</span></li>`)
+    var annotation = $(this).attr("annotation")
+    if (annotation == "" || annotations.has(annotation)) { return true }
+    annotations.set(annotation, $(this).attr("style"))
   })
-  return Array.from(annotations)
+  return Array.from(annotations, function([annotation, style]) {
+    return { annotation: annotation, style: style }
+  }).sort(function(a, b) {
+    // natural sort, so "cmpd 2" comes before "cmpd 10"
+    return a.annotation.localeCompare(b.annotation, undefined, {
+      numeric: true, sensitivity: "base"
+    })
+  })
 }
 
 
 function buildLegendHtml(annotations) {
-  // create HTML for legend from an array of [[colour, annotation-name]]
+  // create HTML for legend from an array of {annotation, style}
   var list = `<ul>`
-  for (i = 0; i < annotations.length; i++) {
-    list += annotations[i]
+  for (var i = 0; i < annotations.length; i++) {
+    list += `<li><span style="${annotations[i].style}">${annotations[i].annotation}</span></li>`
   }
   list += "</ul>"
   return list
